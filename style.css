@@ -1,0 +1,258 @@
+/* Reset & Base */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: 'Poppins', sans-serif;
+  background: linear-gradient(135deg, #d1c4e9, #bbdefb);
+  color: #333;
+  min-height: 100vh;
+  transition: background 0.5s, color 0.5s;
+}
+body.dark-mode {
+  background: linear-gradient(135deg, #1a1a2e, #16213e);
+  color: #eee;
+}
+
+/* Loader */
+.loader {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+.loader::after {
+  content: "";
+  width: 50px;
+  height: 50px;
+  border: 5px solid #f59e0b;
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Toasts */
+.toast-container {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 9999;
+}
+.toast {
+  background: #3b82f6;
+  padding: 10px 15px;
+  margin-bottom: 10px;
+  color: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  animation: fadeSlideIn 0.5s ease forwards;
+}
+@keyframes fadeSlideIn {
+  from { opacity: 0; transform: translateX(50px);}
+  to { opacity: 1; transform: translateX(0);}
+}
+
+/* Auth Page */
+.auth-container {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #d1c4e9, #bbdefb);
+}
+.auth-card {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 20px;
+  padding: 2rem;
+  width: 90%;
+  max-width: 400px;
+  text-align: center;
+  backdrop-filter: blur(15px);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.25);
+  animation: fadeSlideIn 1s ease forwards;
+}
+.auth-card h1 {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+}
+.auth-card h2 {
+  font-size: 1.2rem;
+  color: #555;
+  margin-bottom: 1.5rem;
+}
+.auth-card input {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border-radius: 12px;
+  border: none;
+  background: rgba(255, 255, 255, 0.6);
+  font-family: inherit;
+  font-size: 1rem;
+}
+.auth-card input:focus {
+  outline: none;
+  background: rgba(255, 255, 255, 0.8);
+  box-shadow: 0 0 0 3px #90cdf4;
+}
+.auth-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 1rem;
+}
+.auth-buttons button {
+  flex: 1;
+  padding: 10px;
+  border: none;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
+  color: white;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.3s, transform 0.2s;
+}
+.auth-buttons button:hover {
+  background: linear-gradient(135deg, #2563eb, #1d4ed8);
+  transform: translateY(-2px);
+}
+#auth-message {
+  margin-top: 10px;
+  color: red;
+  font-size: 0.9rem;
+}
+
+/* Notes App Main */
+.container {
+  padding: 2rem;
+  max-width: 1200px;
+  margin: auto;
+}
+input, textarea, button {
+  width: 100%;
+  padding: 10px;
+  margin-top: 10px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-family: inherit;
+}
+textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+button {
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
+  color: white;
+  border: none;
+  cursor: pointer;
+  transition: background 0.3s, transform 0.2s;
+}
+button:hover {
+  background: linear-gradient(135deg, #2563eb, #1d4ed8);
+  transform: translateY(-2px);
+}
+
+/* Notes Layout */
+.notes-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1rem;
+  margin-top: 20px;
+}
+.note-card {
+  background: rgba(173, 216, 230, 0.5);
+  backdrop-filter: blur(12px);
+  padding: 1rem;
+  border-radius: 15px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+  min-height: 180px;
+  max-height: 300px;
+  overflow-y: auto;
+  position: relative;
+  transition: transform 0.3s;
+}
+.note-card:hover {
+  transform: scale(1.02);
+}
+
+/* Tiny Buttons inside Notes */
+.pin-btn, .delete-btn, .edit-btn {
+  background: none;
+  border: none;
+  color: #333;
+  font-size: 1rem;
+  cursor: pointer;
+  padding: 4px;
+  margin-left: 5px;
+}
+.pin-btn:hover, .delete-btn:hover, .edit-btn:hover {
+  color: #1d4ed8;
+}
+
+/* Flex Top Bar inside Card */
+.note-card div:first-child {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Character Counter */
+.char-counter {
+  margin-top: 5px;
+  font-size: 0.9rem;
+  color: #666;
+}
+
+/* Tags */
+.tag {
+  font-weight: 600;
+  color: #4f46e5;
+  margin-top: 5px;
+}
+
+/* Animations */
+@keyframes popIn {
+  from { opacity: 0; transform: scale(0.8); }
+  to { opacity: 1; transform: scale(1); }
+}
+.pop-in {
+  animation: popIn 0.5s ease forwards;
+}
+@keyframes slideIn {
+  from { opacity: 0.5; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.slide-animation {
+  animation: slideIn 0.5s ease forwards;
+}
+.hidden {
+  display: none;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .container {
+    padding: 1rem;
+  }
+}
+.top-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 20px;
+}
+.top-actions input, .top-actions button {
+  flex: 0 0 auto;
+  width: auto;
+  padding: 10px 20px;
+  white-space: nowrap;
+  border-radius: 8px;
+}
