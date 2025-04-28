@@ -256,3 +256,133 @@ button:hover {
   white-space: nowrap;
   border-radius: 8px;
 }
+.profile-bar {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 10px;
+}
+#profile-icon {
+  width: 40px;
+  height: 40px;
+  background: #4f46e5;
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 1.2rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+/* Profile Icon */
+.profile-bar {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+#profile-icon {
+  width: 40px;
+  height: 40px;
+  background: #4f46e5;
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 1.2rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+/* Top actions buttons fixed */
+.top-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 20px;
+}
+.top-actions input, .top-actions button, .top-actions select {
+  flex: 0 0 auto;
+  width: auto;
+  padding: 10px 20px;
+  white-space: nowrap;
+  border-radius: 8px;
+}
+
+/* Themes (based on body[data-theme]) */
+body[data-theme="sunset"] {
+  background: linear-gradient(135deg, #ff7e5f, #feb47b);
+}
+body[data-theme="ocean"] {
+  background: linear-gradient(135deg, #2193b0, #6dd5ed);
+}
+.theme-circles {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-bottom: 1rem;
+}
+.theme-circle {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+.theme-circle:hover {
+  transform: scale(1.2);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+body.dark-mode {
+  background: linear-gradient(135deg, #232526, #414345);
+  color: #eee;
+}
+/* ✨ 1. FADE-IN EFFECT (for Login, Notes, etc.) */
+.fade-in {
+  animation: fadeIn 0.6s ease-out forwards;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* 🚀 2. SLIDE-IN EFFECT (For Login Box) */
+.slide-in {
+  animation: slideIn 0.7s ease-out forwards;
+}
+@keyframes slideIn {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* 🎨 3. POP-IN EFFECT (For Notes Appearing) */
+.pop-in {
+  animation: popIn 0.5s ease-out forwards;
+}
+@keyframes popIn {
+  from { opacity: 0; transform: scale(0.9); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+/* 🌊 4. SMOOTH BACKGROUND TRANSITION (For Theme Switch) */
+body {
+  transition: background 0.6s ease-in-out, color 0.6s ease-in-out;
+}
+
+/* 🎯 5. BUTTON HOVER ANIMATION */
+button {
+  transition: transform 0.2s ease-in-out;
+}
+button:hover {
+  transform: scale(1.05);
+}
+.note-card.pinned {
+  filter: brightness(85%);
+  transform: scale(1.03);
+  border: 2.5px solid white; /* soft luxury gold */
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.35);
+  transition: all 0.3s ease;
+}
+
