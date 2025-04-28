@@ -3,10 +3,11 @@ const loader = document.getElementById('loader');
 window.addEventListener('load', () => {
   setTimeout(() => {
     loader.classList.add('hidden');
-    if (localStorage.getItem('loggedInUser')) {
+    if (localStorage.getItem('loggedInUser') || sessionStorage.getItem('loggedInUser')) {
       showNotesSection();
     } else {
       document.getElementById('auth-section').classList.remove('hidden');
+      document.getElementById('auth-section').classList.add('slide-in'); // ✨ Slide login on first load
     }
   }, 800);
 });
@@ -23,6 +24,7 @@ signupBtn.onclick = signup;
 loginBtn.onclick = login;
 logoutBtn.onclick = () => {
   localStorage.removeItem('loggedInUser');
+  sessionStorage.removeItem('loggedInUser');
   location.reload();
 };
 
@@ -40,8 +42,14 @@ function signup() {
 function login() {
   const username = document.getElementById('username').value.trim();
   const password = document.getElementById('password').value.trim();
+  const rememberMe = document.getElementById('remember-me').checked;
+
   if (localStorage.getItem(username) === password) {
-    localStorage.setItem('loggedInUser', username);
+    if (rememberMe) {
+      localStorage.setItem('loggedInUser', username);
+    } else {
+      sessionStorage.setItem('loggedInUser', username);
+    }
     showNotesSection();
   } else {
     authMessage.textContent = "Wrong credentials.";
@@ -51,7 +59,18 @@ function login() {
 function showNotesSection() {
   authSection.classList.add('hidden');
   noteSection.classList.remove('hidden');
+  noteSection.classList.add('fade-in'); // ✨ Smooth fade-in of notes page
+  const user = localStorage.getItem('loggedInUser') || sessionStorage.getItem('loggedInUser');
+  setProfileIcon(user);
+  loadNotes();
   renderNotes();
+}
+
+function setProfileIcon(user) {
+  const profileIcon = document.getElementById('profile-icon');
+  if (profileIcon) {
+    profileIcon.textContent = user.charAt(0).toUpperCase();
+  }
 }
 
 // Notes System
@@ -65,10 +84,9 @@ const redoBtn = document.getElementById('redo');
 const exportBtn = document.getElementById('export-notes');
 const searchInput = document.getElementById('search-input');
 const toastContainer = document.getElementById('toast-container');
-const toggleThemeBtn = document.getElementById('toggle-theme');
 const charCounter = document.getElementById('char-counter');
 
-let notes = JSON.parse(localStorage.getItem('notes')) || [];
+let notes = [];
 let undoStack = [];
 let redoStack = [];
 
@@ -77,10 +95,8 @@ searchInput.addEventListener('input', (e) => renderNotes(e.target.value));
 undoBtn.onclick = undo;
 redoBtn.onclick = redo;
 exportBtn.onclick = exportNotes;
-toggleThemeBtn.onclick = toggleTheme;
 noteInput.addEventListener('input', updateCharCounter);
 
-// Autosave draft
 noteTitleInput.value = localStorage.getItem('draftTitle') || '';
 noteInput.value = localStorage.getItem('draftContent') || '';
 
@@ -92,7 +108,16 @@ function saveDraft() {
   localStorage.setItem('draftContent', noteInput.value);
 }
 
-// Character and Word Counter
+function loadNotes() {
+  const user = localStorage.getItem('loggedInUser') || sessionStorage.getItem('loggedInUser');
+  notes = JSON.parse(localStorage.getItem(`notes-${user}`)) || [];
+}
+
+function saveNotes() {
+  const user = localStorage.getItem('loggedInUser') || sessionStorage.getItem('loggedInUser');
+  localStorage.setItem(`notes-${user}`, JSON.stringify(notes));
+}
+
 function updateCharCounter() {
   const text = noteInput.value.trim();
   const charCount = text.length;
@@ -100,7 +125,6 @@ function updateCharCounter() {
   charCounter.textContent = `${charCount} characters, ${wordCount} words`;
 }
 
-// Add Note
 function addNote() {
   const title = noteTitleInput.value.trim();
   const content = noteInput.value.trim();
@@ -120,7 +144,6 @@ function addNote() {
   showToast('✅ Note saved!');
 }
 
-// Render Notes
 function renderNotes(filter = '') {
   notesList.innerHTML = '';
 
@@ -141,7 +164,7 @@ function renderNotes(filter = '') {
 
     finalList.forEach((note, index) => {
       const card = document.createElement('div');
-      card.className = 'note-card pop-in';
+      card.className = 'note-card pop-in'; // ✨ pop-in animation
       if (note.pinned) card.classList.add('pinned');
 
       const topRow = document.createElement('div');
@@ -162,7 +185,7 @@ function renderNotes(filter = '') {
       const pinBtn = document.createElement('button');
       pinBtn.className = 'pin-btn';
       pinBtn.innerText = note.pinned ? '📌' : '📍';
-      pinBtn.onclick = () => togglePin(index);
+      pinBtn.onclick = () => togglePin(note.createdAt);
       buttonsDiv.appendChild(pinBtn);
 
       const editBtn = document.createElement('button');
@@ -202,7 +225,6 @@ function renderNotes(filter = '') {
   }
 }
 
-// Filter by Tag
 function filterByTag(tagName) {
   searchInput.value = '';
   const filteredNotes = notes.filter(note => note.tag === tagName);
@@ -220,7 +242,6 @@ function filterByTag(tagName) {
 
 function renderFilteredNotes(filteredNotes) {
   notesList.innerHTML = '';
-
   if (filteredNotes.length === 0) {
     emptyState.classList.remove('hidden');
   } else {
@@ -228,7 +249,7 @@ function renderFilteredNotes(filteredNotes) {
 
     filteredNotes.forEach((note, index) => {
       const card = document.createElement('div');
-      card.className = 'note-card pop-in';
+      card.className = 'note-card pop-in'; // ✨ pop-in animation
       if (note.pinned) card.classList.add('pinned');
 
       const title = document.createElement('h3');
@@ -257,12 +278,6 @@ function renderFilteredNotes(filteredNotes) {
   }
 }
 
-// Save
-function saveNotes() {
-  localStorage.setItem('notes', JSON.stringify(notes));
-}
-
-// Clear Editor
 function clearEditor() {
   noteTitleInput.value = '';
   noteInput.value = '';
@@ -272,7 +287,6 @@ function clearEditor() {
   updateCharCounter();
 }
 
-// Undo Redo
 function undo() {
   if (undoStack.length) {
     redoStack.push([...notes]);
@@ -292,7 +306,6 @@ function redo() {
   }
 }
 
-// Export
 function exportNotes() {
   const blob = new Blob([JSON.stringify(notes, null, 2)], { type: 'application/json' });
   const url = URL.createObjectURL(blob);
@@ -303,7 +316,6 @@ function exportNotes() {
   URL.revokeObjectURL(url);
 }
 
-// Delete
 function deleteNote(index) {
   undoStack.push([...notes]);
   notes.splice(index, 1);
@@ -312,7 +324,6 @@ function deleteNote(index) {
   showToast('🗑️ Note deleted!');
 }
 
-// Edit
 function editNote(index) {
   const note = notes[index];
   noteTitleInput.value = note.title;
@@ -326,7 +337,6 @@ function editNote(index) {
   showToast('✏️ Editing note...');
 }
 
-// Toast
 function showToast(message) {
   const toast = document.createElement('div');
   toast.className = 'toast';
@@ -336,22 +346,25 @@ function showToast(message) {
     toast.remove();
   }, 2500);
 }
-
-// Theme Toggle
-function toggleTheme() {
-  document.body.classList.toggle('dark-mode');
-  toggleThemeBtn.textContent = document.body.classList.contains('dark-mode') ? '☀️' : '🌙';
+function togglePin(createdAt) {
+  const note = notes.find(n => n.createdAt === createdAt);
+  if (note) {
+    note.pinned = !note.pinned;
+    saveNotes();
+    renderNotes();
+  }
 }
 
-// Pin
-function togglePin(index) {
-  notes[index].pinned = !notes[index].pinned;
-  saveNotes();
-  renderNotes();
-  setTimeout(() => {
-    const cards = document.querySelectorAll('.note-card');
-    if (cards[index]) {
-      cards[index].classList.add('slide-animation');
+// Theme Circles Handler
+document.querySelectorAll('.theme-circle').forEach(circle => {
+  circle.addEventListener('click', () => {
+    const theme = circle.getAttribute('data-theme');
+    document.body.removeAttribute('data-theme');
+    document.body.classList.remove('dark-mode');
+    if (theme === 'dark') {
+      document.body.classList.add('dark-mode');
+    } else {
+      document.body.setAttribute('data-theme', theme);
     }
-  }, 100);
-}
+  });
+});
