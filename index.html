@@ -12,13 +12,14 @@
 
   <div id="toast-container" class="toast-container"></div>
 
-  <!-- Updated Login/Signup Section -->
+  <!-- LOGIN / SIGNUP Section -->
   <div id="auth-section" class="auth-container hidden">
     <div class="auth-card">
       <h1>Notes App 📝</h1>
-      <h2>Welcome👋</h2>
+      <h2>Welcome Back! 👋</h2>
       <input type="text" id="username" placeholder="Username" />
       <input type="password" id="password" placeholder="Password" />
+      <label><input type="checkbox" id="remember-me" /> Remember Me</label>
       <div class="auth-buttons">
         <button id="signup">Sign Up</button>
         <button id="login">Login</button>
@@ -27,9 +28,23 @@
     </div>
   </div>
 
-  <!-- Notes App Main Section -->
+  <!-- NOTES APP Section -->
   <div id="note-section" class="container hidden">
+
+    <!-- Profile Icon -->
+    <div class="profile-bar">
+      <div id="profile-icon"></div>
+    </div>
+
+    <!-- Create Note -->
     <div class="top-bar">
+<div class="theme-circles">
+  <div class="theme-circle" data-theme="default" style="background: linear-gradient(135deg, #d1c4e9, #bbdefb);"></div>
+  <div class="theme-circle" data-theme="sunset" style="background: linear-gradient(135deg, #ff7e5f, #feb47b);"></div>
+  <div class="theme-circle" data-theme="ocean" style="background: linear-gradient(135deg, #2193b0, #6dd5ed);"></div>
+  <div class="theme-circle" data-theme="dark" style="background: linear-gradient(135deg, #1a1a2e, #16213e);"></div>
+</div>
+
       <h2>Create a Note 📝</h2>
       <input type="text" id="note-title" placeholder="Title" />
       <textarea id="note-input" placeholder="Write your note..."></textarea>
@@ -40,17 +55,20 @@
       <button id="save-note">Save Note</button>
     </div>
 
+    <!-- Actions -->
     <div class="top-actions">
       <input type="text" id="search-input" placeholder="Search notes..." />
       <button id="undo">Undo</button>
       <button id="redo">Redo</button>
       <button id="export-notes">Export</button>
-      <button id="toggle-theme">🌙</button>
       <button id="logout">Logout</button>
+
     </div>
 
+    <!-- Notes List -->
     <div id="notes-list" class="notes-container"></div>
 
+    <!-- Empty State -->
     <div id="empty-state" class="hidden">
       <img src="https://upload.wikimedia.org/wikipedia/commons/2/20/No_data.svg" alt="No Notes" style="width:100%; max-width:250px; margin:auto; display:block;">
       <p style="text-align:center; color:#777;">No notes yet. Start by writing one!</p>
