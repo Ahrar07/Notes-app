@@ -52,4 +52,11 @@ Open index.html in your web browser:
 - Rich-text editor (bold, headings, etc.)
 - Voice-to-text input
 - Firebase or database integration
+---
+## Author
+Ahrar Hakeem
+- 📧 Email: [ahrarhakeem36@gmail.com](mailto:ahrarhakeem36@gmail.com)
+
+
+
 
